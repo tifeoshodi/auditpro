@@ -61,6 +61,26 @@ export interface AuditIssue {
   created_at: string;
 }
 
+// 5. Audit Templates (Library)
+export interface TemplateTest {
+  id: string;
+  title: string;
+  procedure: string;
+}
+
+export interface TemplateProgramme {
+  id: string;
+  title: string;
+  tests: TemplateTest[];
+}
+
+export interface AuditTemplate {
+  id: string;
+  title: string;
+  description: string;
+  programmes: TemplateProgramme[];
+}
+
 export interface LibraryTemplate {
     id: string;
     title: string;

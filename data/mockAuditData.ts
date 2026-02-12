@@ -1,5 +1,5 @@
 
-import { AuditProject, AuditProgramme, WorkingPaper, AuditIssue } from '../types/audit';
+import { AuditProject, AuditProgramme, WorkingPaper, AuditIssue, AuditTemplate } from '../types/audit';
 
 export const mockProjects: AuditProject[] = [
   {
@@ -96,5 +96,60 @@ export const mockIssues: AuditIssue[] = [
     status: 'open',
     created_at: '2026-01-22',
     assigned_to_email: 'hr.director@company.com'
+  }
+];
+
+export const mockTemplates: AuditTemplate[] = [
+  {
+    id: 'TMP-001',
+    title: 'Standard IT General Controls (ITGC)',
+    description: 'Baseline controls for IT security, access management, and change management compliance.',
+    programmes: [
+      {
+        id: 'TP-001',
+        title: 'Access Control',
+        tests: [
+          {
+            id: 'TT-001',
+            title: 'Review User Access Logs',
+            procedure: 'Obtain system access logs for the review period. Select a sample of 25 logins and verify authorization against HR records.'
+          },
+          {
+            id: 'TT-002',
+            title: 'Verify Password Policy',
+            procedure: 'Inspect system configuration settings to ensure password complexity, rotation, and lockout policies meet the corporate security standard.'
+          }
+        ]
+      },
+      {
+        id: 'TP-002',
+        title: 'Change Management',
+        tests: [
+           {
+            id: 'TT-003',
+            title: 'Check Approval for Recent Deployments',
+            procedure: 'Select the last 5 production deployments. Verify that a Change Request (CR) was filed and approved by the CAB before execution.'
+           }
+        ]
+      }
+    ]
+  },
+  {
+      id: 'TMP-002',
+      title: 'Financial Audit FY25',
+      description: 'Standard financial statement audit procedures covering AP, AR, GL, and Payroll.',
+      programmes: [
+          {
+              id: 'TP-003',
+              title: 'Cash & Bank',
+              tests: [
+                  {
+                      id: 'TT-004',
+                      title: 'Bank Reconciliation Review',
+                      procedure: 'Obtain year-end bank reconciliations for all material accounts. Trace balances to bank confirmation letters and GL.'
+                  }
+              ]
+          }
+      ]
   }
 ];

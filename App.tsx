@@ -6,6 +6,7 @@ import ProjectList from './components/ProjectList';
 import ProjectDetail from './components/ProjectDetail';
 import IssueTracker from './components/IssueTracker';
 import AIAssistant from './components/AIAssistant';
+import Administration from './components/Administration';
 import { AlertCircle } from 'lucide-react';
 
 // Import Types and Mock Data
@@ -90,6 +91,8 @@ const App: React.FC = () => {
         return <AIAssistant />;
       case 'issues':
         return <IssueTracker issues={issues} workingPapers={workingPapers} />;
+      case 'settings':
+        return <Administration />;
       case 'reports':
         return (
           <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
