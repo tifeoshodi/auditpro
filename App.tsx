@@ -3,32 +3,93 @@ import React, { useState } from 'react';
 import Layout from './components/Layout';
 import Dashboard from './components/Dashboard';
 import ProjectList from './components/ProjectList';
+import ProjectDetail from './components/ProjectDetail';
+import IssueTracker from './components/IssueTracker';
 import AIAssistant from './components/AIAssistant';
-import { AlertCircle, Construction } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+
+// Import Types and Mock Data
+import { AuditProject, AuditIssue, TestStatus } from './types/audit';
+import { mockProjects, mockProgrammes, mockWorkingPapers, mockIssues } from './data/mockAuditData';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  
+  // App State lifted from individual components to support drill-down
+  const [projects] = useState(mockProjects);
+  const [programmes] = useState(mockProgrammes);
+  const [workingPapers, setWorkingPapers] = useState(mockWorkingPapers);
+  const [issues, setIssues] = useState(mockIssues);
+  
+  const [selectedProject, setSelectedProject] = useState<AuditProject | null>(null);
+
+  const handleSelectProject = (project: AuditProject) => {
+    setSelectedProject(project);
+    // Ensure we are on the projects tab if redirected from elsewhere (future proofing)
+    if (activeTab !== 'projects') setActiveTab('projects');
+  };
+
+  const handleBackToProjects = () => {
+    setSelectedProject(null);
+  };
+
+  const handleUpdateWPStatus = (wpId: string, status: TestStatus, newIssueData?: Partial<AuditIssue>) => {
+    // Update WP Status
+    setWorkingPapers(prev => prev.map(wp => {
+      if (wp.id === wpId) {
+        return { 
+          ...wp, 
+          status, 
+          issue_id: newIssueData ? `ISSUE-${issues.length + 1}` : wp.issue_id 
+        };
+      }
+      return wp;
+    }));
+
+    // Create Issue if provided
+    if (newIssueData && selectedProject) {
+      const newIssue: AuditIssue = {
+        id: `ISSUE-${issues.length + 1}`,
+        project_id: selectedProject.id,
+        working_paper_id: wpId,
+        title: newIssueData.title || 'Untitled Issue',
+        description: newIssueData.description || '',
+        risk_level: newIssueData.risk_level || 'medium',
+        status: 'open',
+        created_at: newIssueData.created_at || new Date().toISOString(),
+        assigned_to_email: 'pending@assign.com'
+      };
+      setIssues(prev => [...prev, newIssue]);
+    }
+  };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard />;
       case 'projects':
-        return <ProjectList />;
+        if (selectedProject) {
+          // Filter data for the selected project
+          const projectProgrammes = programmes.filter(p => p.project_id === selectedProject.id);
+          // Get all WPs for these programmes
+          const progIds = projectProgrammes.map(p => p.id);
+          const projectWPs = workingPapers.filter(wp => progIds.includes(wp.programme_id));
+
+          return (
+            <ProjectDetail 
+              project={selectedProject}
+              programmes={projectProgrammes}
+              workingPapers={projectWPs}
+              onBack={handleBackToProjects}
+              onUpdateWPStatus={handleUpdateWPStatus}
+            />
+          );
+        }
+        return <ProjectList projects={projects} onSelectProject={handleSelectProject} />;
       case 'analytics':
         return <AIAssistant />;
       case 'issues':
-        return (
-          <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
-            <div className="bg-blue-100 p-6 rounded-full text-blue-600">
-              <Construction size={48} />
-            </div>
-            <h2 className="text-2xl font-bold text-slate-800">Issue Tracker Module</h2>
-            <p className="text-slate-500 max-w-md text-center">
-              The full centralized issue tracking and management module is currently being migrated to the new AuditPro+ core.
-            </p>
-          </div>
-        );
+        return <IssueTracker issues={issues} workingPapers={workingPapers} />;
       case 'reports':
         return (
           <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
@@ -64,7 +125,11 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+    <Layout activeTab={activeTab} setActiveTab={(tab) => {
+      setActiveTab(tab);
+      // Reset selection when navigating away from projects tab
+      if (tab !== 'projects') setSelectedProject(null);
+    }}>
       {renderContent()}
     </Layout>
   );
