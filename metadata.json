@@ -1,0 +1,7 @@
+{
+  "name": "AuditPro+",
+  "description": "A comprehensive audit management system inspired by Teammate+, designed for planning, executing, and reporting audits with integrated AI insights.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
