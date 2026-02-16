@@ -9,6 +9,10 @@ export const mockProjects: AuditProject[] = [
     lead_auditor_id: 'Boluwatife Oshodi',
     start_date: '2026-01-15',
     end_date: '2026-03-30',
+    audit_year: 2026,
+    location: 'Lagos HQ',
+    strategy_ref: 'Financial Integrity',
+    audit_type: 'Planned'
   },
   {
     id: 'PRJ-2026-002',
@@ -17,6 +21,10 @@ export const mockProjects: AuditProject[] = [
     lead_auditor_id: 'Fola Onadeko',
     start_date: '2026-02-01',
     end_date: '2026-04-15',
+    audit_year: 2026,
+    location: 'Remote / Cloud',
+    strategy_ref: 'Cyber Resilience',
+    audit_type: 'Special'
   }
 ];
 
@@ -56,7 +64,10 @@ export const mockWorkingPapers: WorkingPaper[] = [
     status: 'pass',
     auditor_notes: 'All samples matched employment contracts.',
     evidence_urls: ['contract_sample_01.pdf'],
-    completed_at: '2026-01-20'
+    completed_at: '2026-01-20',
+    estimated_hours: 4,
+    actual_hours: 3.5,
+    assigned_to_user_id: 'Priscilla Adeoye'
   },
   {
     id: 'WP-002',
@@ -66,14 +77,19 @@ export const mockWorkingPapers: WorkingPaper[] = [
     status: 'fail',
     auditor_notes: '3 instances found without approval signatures.',
     issue_id: 'ISSUE-001',
-    completed_at: '2026-01-22'
+    completed_at: '2026-01-22',
+    estimated_hours: 6,
+    actual_hours: 8,
+    assigned_to_user_id: 'Priscilla Adeoye'
   },
   {
     id: 'WP-003',
     programme_id: 'PROG-001',
     test_title: 'Ghost Employee Check',
     test_procedure: 'Reconcile payroll master list with active employee HR database.',
-    status: 'pending'
+    status: 'pending',
+    estimated_hours: 8,
+    assigned_to_user_id: 'Priscilla Adeoye'
   },
   // Procurement WPs
   {
@@ -81,7 +97,9 @@ export const mockWorkingPapers: WorkingPaper[] = [
     programme_id: 'PROG-002',
     test_title: 'Vendor Selection',
     test_procedure: 'Ensure competitive bidding process for contracts over ₦1M.',
-    status: 'pending'
+    status: 'pending',
+    estimated_hours: 10,
+    assigned_to_user_id: 'Praise Nnamonu'
   }
 ];
 
@@ -91,11 +109,16 @@ export const mockIssues: AuditIssue[] = [
     project_id: 'PRJ-2026-001',
     working_paper_id: 'WP-002',
     title: 'Unauthorized Overtime Payments',
-    description: 'During testing of overtime payments, 3 out of 25 samples lacked required line manager approval, totaling ₦215,000 in potentially unauthorized payouts.',
+    finding: 'During testing of overtime payments, 3 out of 25 samples lacked required line manager approval.',
+    impact: 'Potential financial loss of ₦215,000 due to potentially unauthorized payouts.',
+    recommendation: 'Enforce automated approval workflows in the payroll system to prevent bypassing.',
+    root_cause: 'Manual paper-based approval process allows for bypassing.',
     risk_level: 'high',
     status: 'open',
     created_at: '2026-01-22',
-    assigned_to_email: 'hr.director@company.com'
+    assigned_to_email: 'hr.director@company.com',
+    department: 'Human Resources',
+    remediation_timeline: 'Q2 2026'
   }
 ];
 

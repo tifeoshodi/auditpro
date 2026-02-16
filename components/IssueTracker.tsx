@@ -6,8 +6,7 @@ import {
   Filter, 
   MoreVertical, 
   ExternalLink,
-  Mail,
-  MessageSquare
+  Mail
 } from 'lucide-react';
 import { AuditIssue, WorkingPaper } from '../types/audit';
 
@@ -61,7 +60,7 @@ const IssueTracker: React.FC<IssueTrackerProps> = ({ issues, workingPapers }) =>
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Issue ID</th>
-                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Title / Description</th>
+                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Title / Finding</th>
                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Risk</th>
                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Linked WP</th>
@@ -80,7 +79,7 @@ const IssueTracker: React.FC<IssueTrackerProps> = ({ issues, workingPapers }) =>
                     <td className="px-6 py-5 max-w-sm">
                       <div className="flex flex-col">
                         <span className="font-semibold text-slate-800 mb-1">{issue.title}</span>
-                        <p className="text-xs text-slate-500 line-clamp-2">{issue.description}</p>
+                        <p className="text-xs text-slate-500 line-clamp-2">{issue.finding}</p>
                       </div>
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap">

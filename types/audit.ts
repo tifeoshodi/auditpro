@@ -21,8 +21,12 @@ export interface AuditProject {
   lead_auditor_id: string;
   start_date: string;
   end_date: string;
-  // programmes is optional in the interface but we will manage it via separate state/arrays in this frontend implementation for flexibility, 
-  // or attached if we were fetching a deep graph.
+  // NEW FIELDS linked to "2026 Audit Plan"
+  audit_year: number; 
+  location?: string; // e.g. "Ikoyi", "VI"
+  strategy_ref?: string; // e.g. "Operational Efficiency"
+  audit_type?: 'Routine' | 'Planned' | 'Special';
+  programmes?: AuditProgramme[];
 }
 
 // 2. The Programme (Scope Area, e.g., "Cash & Bank")
@@ -45,19 +49,32 @@ export interface WorkingPaper {
   evidence_urls?: string[];
   completed_at?: string;
   issue_id?: string;
+  // NEW FIELDS linked to "HR Workplan"
+  estimated_hours?: number; // Budgeted time
+  actual_hours?: number;    // Time spent
+  assigned_to_user_id?: string; // Granular assignment
 }
 
 // 4. The Issue (Finding)
 export interface AuditIssue {
   id: string;
   project_id: string;
-  working_paper_id?: string; // Optional if finding is general
-  title: string;
-  description: string;
+  working_paper_id?: string;
+  title: string; // The headline
+  // NEW SPLIT FIELDS linked to "Admin Audit Report"
+  finding: string;         // "We noticed X..."
+  impact: string;          // "This causes Y..."
+  recommendation: string;  // "We advise Z..."
+  root_cause?: string;
+  
   risk_level: 'low' | 'medium' | 'high' | 'critical';
   status: IssueStatus;
+  
+  // NEW FOLLOW-UP FIELDS
+  department?: string;
   assigned_to_email?: string;
   management_response?: string;
+  remediation_timeline?: string; // e.g. "Immediate", "Q3 2026"
   created_at: string;
 }
 
